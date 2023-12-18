@@ -1,10 +1,9 @@
-import 'package:entretiens_defarsci/pages/detailsEntretiens.dart';
+import 'package:entretiens_defarsci/pages/details_entretiens.dart';
+import 'package:entretiens_defarsci/pages/list_recherche.dart';
 import 'package:flutter/material.dart';
-
 import "model.dart";
-
 class ListEntretiens extends StatelessWidget {
-  const ListEntretiens({Key? key}) : super(key: key);
+  const ListEntretiens({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,16 +12,18 @@ class ListEntretiens extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyList(),
+      home: const MyList(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'liste entretien',
       home: MyList(),
@@ -30,72 +31,117 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyList extends StatelessWidget {
+class MyList extends StatefulWidget {
+  const MyList({super.key});
+
+  @override
+  State<MyList> createState() => _MyListState();
+}
+
+class _MyListState extends State<MyList> {
+  final _search = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _search.dispose();
+  }
+
+  @override
+  void initState() {
+   
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var routes = <String, WidgetBuilder>{
+      '/details-entretiens': (context) => const DetailsEntretiens(),
+      '/details-recherche': (context) => const ListRecherche(),
+    };
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {
-        '/details-entretiens': (context) => DetailsEntretiens(),
-      },
+      routes: routes,
       title: 'liste entretien',
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 132, 173, 219),
-          title: Text(
-            'liste entretien',
-            style: TextStyle(
-                color: Color.fromARGB(255, 247, 247, 248),
-                fontWeight: FontWeight.bold,
-                fontSize: 25),
+          backgroundColor: const Color.fromARGB(255, 132, 173, 219),
+          title: const Row(
+            children: [
+              Text(
+                'liste entretien',
+                style: TextStyle(
+                    color: Color.fromARGB(255, 247, 247, 248),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25),
+              ),
+              TextField(),
+            ],
           ),
         ),
-        body: ListView.builder(
-          itemCount: listEntretiens.length,
-          itemBuilder: (context, index) {
-            int id = index;
-            return Card(
-                color: Colors.white,
-                margin: EdgeInsets.all(5),
-                child: ListTile(
-                  onTap: () => Navigator.pushNamed(
+        body: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
                     context,
-                    '/details-entretiens',
-                    arguments: {'id': id, 'age': 25},
-                  ),
-                  title: Row(
-                    children: [
-                      Text(
-                        'prenom: ${listEntretiens[id].prenom}',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                    MaterialPageRoute(builder: (context) => const ListRecherche()),
+                  );
+                },
+                child: const Text("recherche")),
+            Expanded(
+                child: ListView.builder(
+              itemCount: listEntretiens.length,
+              itemBuilder: (context, index) {
+                int id = index;
+                return Card(
+                    color: Colors.white,
+                    margin: const EdgeInsets.all(5),
+                    child: ListTile(
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        '/details-entretiens',
+                        arguments: {'id': id, 'age': 25},
                       ),
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          ' nom: ${listEntretiens[id].nom}',
-                          textAlign: TextAlign.end,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
-                  ),
-                  subtitle: Row(
-                    children: [
-                      Text(
-                        ' email: ${listEntretiens[id].email}',
-                        style: TextStyle(),
+                      title: Row(
+                        children: [
+                          Text(
+                            'prenom:  ${listEntretiens[id].prenom}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              ' nom: ${listEntretiens[id].nom}',
+                              textAlign: TextAlign.end,
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
                       ),
-                      Expanded(
-                          flex: 4,
-                          child: Text(
-                            ' domaine: ${listEntretiens[id].domaine}',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 233, 101, 29)),
-                          ))
-                    ],
-                  ),
-                ));
-          },
+                      subtitle: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            ' email: ${listEntretiens[id].email}',
+                            style: const TextStyle(),
+                          ),
+                          Expanded(
+                              flex: 4,
+                              child: Text(
+                                textAlign: TextAlign.right,
+                                ' domaine: ${listEntretiens[id].domaine}',
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 233, 101, 29),
+                                ),
+                              ))
+                        ],
+                      ),
+                    ));
+              },
+            )),
+          ],
         ),
       ),
     );
