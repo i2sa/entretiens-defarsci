@@ -2,6 +2,8 @@ import 'package:entretiens_defarsci/pages/detail_entretien_recherche.dart';
 import 'package:entretiens_defarsci/pages/details_entretiens.dart';
 import 'package:flutter/material.dart';
 import "model.dart";
+import "package:intl/intl.dart";
+
 class ListRecherche extends StatelessWidget {
   const ListRecherche({super.key});
 
@@ -44,6 +46,33 @@ class _ItemListState extends State<ItemList> {
   late int id;
   bool affiche = true;
   TextEditingController searchController = TextEditingController();
+  DateTimeRange? selectedDateRange;
+
+  Future<void> _selectDateRange(BuildContext context) async {
+    final DateTimeRange? picked = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(2017),
+      lastDate: DateTime(2030),
+    );
+
+    if (picked != null && picked != selectedDateRange) {
+      setState(() {
+        selectedDateRange = picked;
+        filteredItems = widget.items
+            .where((item) =>
+                    DateFormat('dd/MM/yyyy')
+                        .format(item.dateCreation)
+                        .toString() ==
+                    DateFormat('dd/MM/yyyy').format(selectedDateRange!.start)
+                //     &&
+                // DateFormat('dd/MM/yyyy').format(item.dateCreation) ==
+                //     DateFormat('dd/MM/yyyy').format(selectedDateRange!.end)
+
+                )
+            .toList();
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -53,25 +82,31 @@ class _ItemListState extends State<ItemList> {
 
   void filterList() {
     String filterText = searchController.text.toLowerCase();
+    String filterTextOption = selectedValue;
     setState(() {
       filteredItems = widget.items
           .where((item) =>
               item.prenom.toLowerCase().contains(filterText) ||
-              item.nom.toLowerCase().contains(filterText))
+              item.nom.toLowerCase().contains(filterText) &&
+                  item.domaine.toLowerCase() == filterTextOption)
           .toList();
-      affiche = false;
+      // affiche = false;
       id = filteredItems.length;
     });
   }
 
   void filterListOption() {
-    String filterText = selectedValue;
+    String filterText = searchController.text.toLowerCase();
+    String filterTextOption = selectedValue;
     nbreEntretien;
     setState(() {
       filteredItems = widget.items
-          .where((item) => item.domaine.toLowerCase().contains(filterText))
+          .where((item) =>
+              item.domaine.toLowerCase().contains(filterTextOption) &&
+              item.prenom.contains(searchController.text))
           .toList();
-      affiche = false;
+      // affiche = false;
+      print(DateFormat('dd/MM/yyyy').format(filteredItems[1].dateCreation));
       id = filteredItems.length;
     });
   }
@@ -88,6 +123,15 @@ class _ItemListState extends State<ItemList> {
               filterList();
             },
             decoration: const InputDecoration(
+              labelStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                color: Color.fromARGB(255, 233, 101, 29),
+                width: 2,
+              )),
+              focusColor: Color.fromARGB(255, 233, 101, 29),
               labelText: 'Rechercher',
               border: OutlineInputBorder(),
             ),
@@ -98,6 +142,9 @@ class _ItemListState extends State<ItemList> {
           child: Column(
             children: [
               DropdownButtonFormField<String>(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.all(10),
+                borderRadius: BorderRadius.circular(12),
                 value: selectedValue,
                 items: [
                   'cm',
@@ -116,13 +163,70 @@ class _ItemListState extends State<ItemList> {
                   });
                 },
                 decoration: const InputDecoration(
+                  labelStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  border: OutlineInputBorder(),
                   labelText: 'Sélectionnez une option',
                 ),
               ),
+              ElevatedButton(
+                onPressed: () => _selectDateRange(context),
+                child: Text('Sélectionner la Plage de Dates'),
+              ),
+              if (selectedDateRange != null)
+                Text(
+                  'Plage de Dates Sélectionnée:\n${DateFormat('dd/MM/yyyy').format(selectedDateRange!.start)} - ${DateFormat('dd/MM/yyyy').format(selectedDateRange!.end)}',
+                  style: TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center,
+                ),
               const SizedBox(height: 16),
               if (affiche)
-                Text('nombre de candidats entretien ${filteredItems.length}'),
-              if (!affiche) Text('nombre de candidats entretien $id'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('nombre de candidats entretien ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 30)),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 20, right: 50),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.red,
+                      ),
+                      height: 30,
+                      width: 30,
+                      child: Text(
+                        style: TextStyle(color: Colors.white),
+                        filteredItems.length.toString(),
+                      ),
+                      alignment: Alignment.center,
+                    )
+                  ],
+                ),
+              if (!affiche)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('nombre de candidats entretien ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 30)),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 20, right: 50),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.red,
+                      ),
+                      height: 30,
+                      width: 30,
+                      child: Text(
+                        style: TextStyle(color: Colors.white),
+                        filteredItems.length.toString(),
+                      ),
+                      alignment: Alignment.center,
+                    )
+                  ],
+                ),
             ],
           ),
         ),
@@ -131,6 +235,8 @@ class _ItemListState extends State<ItemList> {
             child: ListView.builder(
               itemCount: filteredItems.length,
               itemBuilder: (context, index) {
+                print(filteredItems[index].dateCreation);
+
                 nbreEntretien = filteredItems.length;
                 int id = index;
                 return Column(

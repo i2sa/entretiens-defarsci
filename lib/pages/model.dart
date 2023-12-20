@@ -22,31 +22,32 @@ class Entretiens {
   final String modalitePaiement;
   final int numberEnCasDurgence;
   final String informationsSupplementaires;
+  DateTime dateCreation;
 
   Entretiens(
-    this.prenom,
-    this.nom,
-    this.email,
-    this.telephone,
-    this.adresse,
-    this.domaine,
-    this.pourquoiCeChoix,
-    this.participants,
-    this.presentationDuCandidat,
-    this.connaissezVousDefarsci,
-    this.commentVoyezVousDefarsci,
-    this.quEntendezDeDefarsci,
-    this.atouts,
-    this.faiblesses,
-    this.maladieOuAllergie,
-    this.objectifsDans2ans,
-    this.moisDeFormation,
-    this.demarrage,
-    this.disponibiliteDuCandidat,
-    this.modalitePaiement,
-    this.numberEnCasDurgence,
-    this.informationsSupplementaires,
-  );
+      this.prenom,
+      this.nom,
+      this.email,
+      this.telephone,
+      this.adresse,
+      this.domaine,
+      this.pourquoiCeChoix,
+      this.participants,
+      this.presentationDuCandidat,
+      this.connaissezVousDefarsci,
+      this.commentVoyezVousDefarsci,
+      this.quEntendezDeDefarsci,
+      this.atouts,
+      this.faiblesses,
+      this.maladieOuAllergie,
+      this.objectifsDans2ans,
+      this.moisDeFormation,
+      this.demarrage,
+      this.disponibiliteDuCandidat,
+      this.modalitePaiement,
+      this.numberEnCasDurgence,
+      this.informationsSupplementaires,
+      this.dateCreation);
 }
 
 final List<Entretiens> listEntretiens = [
@@ -72,7 +73,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2011, 12, 02)),
   Entretiens(
       " awa",
       "ndour",
@@ -95,7 +97,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2017, 08, 17)),
   Entretiens(
       " moussa",
       "ndiaye",
@@ -118,7 +121,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2020, 11, 12)),
   Entretiens(
       " ousmane",
       "sow",
@@ -141,7 +145,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2021, 11, 22)),
   Entretiens(
       " penda",
       "sy",
@@ -164,7 +169,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2020, 12, 15)),
   Entretiens(
       " kadia",
       "fall",
@@ -187,7 +193,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2021, 07, 04)),
   Entretiens(
       " rama",
       "diop",
@@ -210,7 +217,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2019, 06, 19)),
   Entretiens(
       " demba",
       "ka",
@@ -233,7 +241,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2022, 11, 28)),
   Entretiens(
       " amadou",
       "gueye",
@@ -256,7 +265,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2023, 11, 12)),
   Entretiens(
       " lamine",
       "mane",
@@ -279,7 +289,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2023, 08, 22)),
   Entretiens(
       " mansour",
       "ndoye",
@@ -302,7 +313,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2023, 02, 13)),
   Entretiens(
       " absa",
       "deme",
@@ -325,7 +337,8 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2022, 10, 24)),
   Entretiens(
       " aissata",
       "ba",
@@ -348,5 +361,6 @@ final List<Entretiens> listEntretiens = [
       "3mois",
       "10000",
       773100000,
-      "bla bla bla"),
+      "bla bla bla",
+      DateTime(2023, 12, 12)),
 ];
