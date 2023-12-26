@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:entretiens_defarsci/pages/details_entretiens.dart';
 import 'package:entretiens_defarsci/pages/list_recherche.dart';
 import 'package:flutter/material.dart';
@@ -16,19 +18,6 @@ class ListEntretiens extends StatelessWidget {
       ),
       home: const MyList(),
       debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'liste entretien',
-      home: MyList(),
     );
   }
 }
@@ -61,6 +50,8 @@ class _MyListState extends State<MyList> {
       '/details-recherche': (context) => const ListRecherche(),
     };
     return MaterialApp(
+      theme:
+          ThemeData(primarySwatch: Colors.purple, fontFamily: 'SpaceGrotesk'),
       debugShowCheckedModeBanner: false,
       routes: routes,
       title: 'liste entretien',
@@ -74,10 +65,11 @@ class _MyListState extends State<MyList> {
                 child: Text(
                   'liste entretien',
                   style: TextStyle(
+                      fontFamily: "RobotoSlab",
                       wordSpacing: 10,
                       color: Color.fromARGB(255, 247, 247, 248),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 35),
                 ),
               ),
             ],
@@ -97,6 +89,30 @@ class _MyListState extends State<MyList> {
                   },
                   child: const Text("recherche")),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('nombre de candidats entretien ',
+                    style: TextStyle(
+                        fontFamily: "RobotoSlab",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20, right: 50),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.red,
+                  ),
+                  height: 30,
+                  width: 30,
+                  alignment: Alignment.center,
+                  child: Text(
+                    style: const TextStyle(color: Colors.white),
+                    listEntretiens.length.toString(),
+                  ),
+                )
+              ],
+            ),
             Expanded(
                 child: ListView.builder(
               itemCount: listEntretiens.length,
@@ -111,7 +127,7 @@ class _MyListState extends State<MyList> {
                         onTap: () => Navigator.pushNamed(
                           context,
                           '/details-entretiens',
-                          arguments: {'id': id, 'age': 25},
+                          arguments: {'id': index, 'age': 25},
                         ),
                         title: Row(
                           children: [
@@ -131,26 +147,28 @@ class _MyListState extends State<MyList> {
                             )
                           ],
                         ),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        subtitle: Column(
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  ' email: ${listEntretiens[id].email}',
+                                  style: const TextStyle(),
+                                ),
+                              ],
+                            ),
                             Text(
-                              ' email: ${listEntretiens[id].email}',
+                              " date : ${DateFormat('dd/MM/yyyy').format(listEntretiens[id].dateCreation)}",
                               style: const TextStyle(),
                             ),
                             Text(
-                              " date : ${DateFormat.yMMMd().format(listEntretiens[id].dateCreation)}",
-                              style: const TextStyle(),
-                            ),
-                            Expanded(
-                                flex: 4,
-                                child: Text(
-                                  textAlign: TextAlign.right,
-                                  ' domaine: ${listEntretiens[id].domaine}',
-                                  style: const TextStyle(
-                                    color: Color.fromARGB(255, 233, 101, 29),
-                                  ),
-                                ))
+                              textAlign: TextAlign.right,
+                              ' domaine: ${listEntretiens[id].domaine}',
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 233, 101, 29),
+                              ),
+                            )
                           ],
                         ),
                       )),

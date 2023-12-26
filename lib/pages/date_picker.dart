@@ -1,13 +1,18 @@
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 // import 'package:date_range_picker/date_range_picker.dart';
 import "package:intl/intl.dart";
 
 class DatePicker extends StatefulWidget {
+  const DatePicker({super.key});
+
   @override
   _DatePickerState createState() => _DatePickerState();
 }
 
 class _DatePickerState extends State<DatePicker> {
+
   DateTimeRange? selectedDateRange;
 
   Future<void> _selectDateRange(BuildContext context) async {
@@ -28,7 +33,7 @@ class _DatePickerState extends State<DatePicker> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sélection de Plage de Dates'),
+        title: const Text('Sélection de Plage de Dates'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,13 +41,13 @@ class _DatePickerState extends State<DatePicker> {
           children: [
             ElevatedButton(
               onPressed: () => _selectDateRange(context),
-              child: Text('Sélectionner la Plage de Dates'),
+              child: const Text('Sélectionner la Plage de Dates'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             if (selectedDateRange != null)
               Text(
                 'Plage de Dates Sélectionnée:\n${DateFormat('dd/MM/yyyy').format(selectedDateRange!.start)} - ${DateFormat('dd/MM/yyyy').format(selectedDateRange!.end)}',
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
               ),
           ],
