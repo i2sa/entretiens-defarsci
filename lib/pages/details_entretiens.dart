@@ -16,7 +16,7 @@ class DetailsEntretiens extends StatelessWidget {
     // int age = arguments['age'];
     return MaterialApp(
       color: Colors.white,
-      title: "details entretien ",
+      title: "Detail entretien ",
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
@@ -31,7 +31,7 @@ class DetailsEntretiens extends StatelessWidget {
             },
           ),
           title: const Text(
-            "details entretien",
+            "Detail entretien",
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -46,44 +46,44 @@ class DetailsEntretiens extends StatelessWidget {
                       Card(
                         child: Column(
                           children: [
-                            const Text("details candidat",
+                            const Text("Detail candidat",
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 25,
                                 )),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'prenom: ${listEntretiens[id].prenom}',
+                                      'Prenom: ${listEntretiens[id].prenom}',
                                       style: const TextStyle(
                                         color: Colors.black,
                                       ),
                                       textAlign: TextAlign.left,
                                     ),
                                     Text(
-                                      ' nom: ${listEntretiens[id].nom}',
+                                      ' Nom: ${listEntretiens[id].nom}',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
                                   ],
                                 )),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'telephone: ${listEntretiens[id].telephone}',
+                                      'Telephone: ${listEntretiens[id].telephone}',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
                                     Text(
-                                      ' domaine: ${listEntretiens[id].domaine}',
+                                      ' Domaine: ${listEntretiens[id].domaine}',
                                       style: const TextStyle(
                                           color: Color.fromARGB(
                                               255, 233, 101, 29)),
@@ -91,7 +91,7 @@ class DetailsEntretiens extends StatelessWidget {
                                   ],
                                 )),
                             Padding(
-                              padding: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +104,7 @@ class DetailsEntretiens extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              ' email: ${listEntretiens[id].email}',
+                              ' Email: ${listEntretiens[id].email}',
                               style: const TextStyle(
                                   color: Color.fromARGB(255, 233, 101, 29)),
                             )
@@ -114,16 +114,17 @@ class DetailsEntretiens extends StatelessWidget {
                       Card(
                         child: Column(
                           children: [
-                            const Text("details techniques",
+                            const Text("Detail techniques",
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 25)),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'presentation du candidat: ${listEntretiens[id].presentationDuCandidat}',
+                                      'Presentation du candidat: ${listEntretiens[id].presentationDuCandidat}',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
@@ -136,7 +137,7 @@ class DetailsEntretiens extends StatelessWidget {
                         child: Column(
                           children: [
                             const Text(
-                              " attentes  du candidat ",
+                              " Attentes  du candidat ",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 25,
@@ -144,36 +145,36 @@ class DetailsEntretiens extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      ' connaissez vous defarsci: ${listEntretiens[id].connaissezVousDefarsci}',
+                                      ' Connaissez vous defarsci: ${listEntretiens[id].connaissezVousDefarsci}',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
                                   ],
                                 )),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'comment voyez vous defarsci: ${listEntretiens[id].commentVoyezVousDefarsci}',
+                                      'Comment voyez vous defarsci: ${listEntretiens[id].commentVoyezVousDefarsci}',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
                                   ],
                                 )),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      ' qu\'entendez de defarsci: ${listEntretiens[id].quEntendezDeDefarsci}',
+                                      ' Qu\'entendez de defarsci: ${listEntretiens[id].quEntendezDeDefarsci}',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
@@ -185,37 +186,37 @@ class DetailsEntretiens extends StatelessWidget {
                       Card(
                         child: Column(
                           children: [
-                            const Text("info personnel  ",
+                            const Text("Info personnel  ",
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 25,
                                   fontFamily: "RobotoSlab",
                                 )),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'pourquoi ce choix: ${listEntretiens[id].pourquoiCeChoix}',
+                                      'Pourquoi ce choix: ${listEntretiens[id].pourquoiCeChoix}',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
                                     Text(
-                                      'atouts: ${listEntretiens[id].atouts}',
+                                      'Atouts: ${listEntretiens[id].atouts}',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
                                   ],
                                 )),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      ' faiblesses: ${listEntretiens[id].faiblesses} ',
+                                      ' Faiblesses: ${listEntretiens[id].faiblesses} ',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
@@ -231,7 +232,7 @@ class DetailsEntretiens extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'maladie ou allergie: ${listEntretiens[id].maladieOuAllergie} ',
+                                        'Maladie ou Allergie: ${listEntretiens[id].maladieOuAllergie} ',
                                         style: const TextStyle(
                                             color: Colors.black),
                                       ),
@@ -246,76 +247,59 @@ class DetailsEntretiens extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'disponibilite du candidat: ${listEntretiens[id].disponibiliteDuCandidat} ',
+                                    'Disponibilite du candidat: ${listEntretiens[id].disponibiliteDuCandidat} ',
                                     style: const TextStyle(color: Colors.black),
                                   ),
                                 ],
                               ),
                             ),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      ' objectifs dans 2ans: ${listEntretiens[id].objectifsDans2ans} ',
+                                      ' Objectifs dans 2ans: ${listEntretiens[id].objectifsDans2ans} ',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
                                   ],
                                 )),
-                            Text(
-                              'disponibilite du candidat: ${listEntretiens[id].disponibiliteDuCandidat} ',
-                              style: const TextStyle(color: Colors.black),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Disponibilite du candidat: ${listEntretiens[id].disponibiliteDuCandidat} ',
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                              ],
                             ),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'numbre cas d\'urgence: ${listEntretiens[id].numberEnCasDurgence} ',
+                                      'Nombre cas d\'urgence: ${listEntretiens[id].numberEnCasDurgence} ',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
                                   ],
                                 )),
-                            Text(
-                              ' informations supplementaires: ${listEntretiens[id].informationsSupplementaires} ',
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Card(
-                        child: Column(
-                          children: [
-                            const Text("details de la formation",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 25,
-                                  fontFamily: "RobotoSlab",
-                                )),
-                            Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'mois de formation: ${listEntretiens[id].moisDeFormation} ',
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                    Text(
-                                      ' demarrage: ${listEntretiens[id].demarrage} ',
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                    ),
-                                  ],
-                                )),
-                            Text(
-                              ' modalite de paiment: ${listEntretiens[id].modalitePaiement} ',
-                              style: const TextStyle(color: Colors.black),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    ' Informations supplementaires: ${listEntretiens[id].informationsSupplementaires} ',
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -323,19 +307,60 @@ class DetailsEntretiens extends StatelessWidget {
                       Card(
                         child: Column(
                           children: [
-                            const Text("  charge de l'entretien",
+                            const Text("Details de la formation",
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 25,
                                   fontFamily: "RobotoSlab",
                                 )),
                             Padding(
-                                padding: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(10.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      ' participants: ${listEntretiens[id].participants} ',
+                                      'Mois de formation: ${listEntretiens[id].moisDeFormation} ',
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
+                                    Text(
+                                      ' Demarrage: ${listEntretiens[id].demarrage} ',
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                )),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    ' Modalite de paiment: ${listEntretiens[id].modalitePaiement} ',
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Card(
+                        child: Column(
+                          children: [
+                            const Text("  Charge de l'entretien",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 25,
+                                  fontFamily: "RobotoSlab",
+                                )),
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      ' Participants: ${listEntretiens[id].participants} ',
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),

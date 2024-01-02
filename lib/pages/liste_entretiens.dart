@@ -12,7 +12,7 @@ class ListEntretiens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'liste entretien',
+      title: 'Liste entretien',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -54,7 +54,7 @@ class _MyListState extends State<MyList> {
           ThemeData(primarySwatch: Colors.purple, fontFamily: 'SpaceGrotesk'),
       debugShowCheckedModeBanner: false,
       routes: routes,
-      title: 'liste entretien',
+      title: 'Liste entretien',
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 132, 173, 219),
@@ -63,7 +63,7 @@ class _MyListState extends State<MyList> {
               Padding(
                 padding: EdgeInsets.only(left: 20, top: 10),
                 child: Text(
-                  'liste entretien',
+                  'Liste entretien',
                   style: TextStyle(
                       fontFamily: "RobotoSlab",
                       wordSpacing: 10,
@@ -87,12 +87,12 @@ class _MyListState extends State<MyList> {
                           builder: (context) => const ListRecherche()),
                     );
                   },
-                  child: const Text("recherche")),
+                  child: const Text("Recherche")),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('nombre de candidats entretien ',
+                const Text('Nombre de candidat des entretiens ',
                     style: TextStyle(
                         fontFamily: "RobotoSlab",
                         fontWeight: FontWeight.bold,
@@ -132,14 +132,14 @@ class _MyListState extends State<MyList> {
                         title: Row(
                           children: [
                             Text(
-                              'prenom:  ${listEntretiens[id].prenom}',
+                              'Prenom:  ${listEntretiens[id].prenom}',
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Expanded(
                               flex: 2,
                               child: Text(
-                                ' nom: ${listEntretiens[id].nom}',
+                                ' Nom: ${listEntretiens[id].nom}',
                                 textAlign: TextAlign.end,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
@@ -153,18 +153,18 @@ class _MyListState extends State<MyList> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  ' email: ${listEntretiens[id].email}',
+                                  ' Email: ${listEntretiens[id].email}',
                                   style: const TextStyle(),
                                 ),
                               ],
                             ),
                             Text(
-                              " date : ${DateFormat('dd/MM/yyyy').format(listEntretiens[id].dateCreation)}",
+                              " Date : ${DateFormat('dd/MM/yyyy').format(listEntretiens[id].dateCreation)}",
                               style: const TextStyle(),
                             ),
                             Text(
                               textAlign: TextAlign.right,
-                              ' domaine: ${listEntretiens[id].domaine}',
+                              ' Domaine: ${listEntretiens[id].domaine}',
                               style: const TextStyle(
                                 color: Color.fromARGB(255, 233, 101, 29),
                               ),

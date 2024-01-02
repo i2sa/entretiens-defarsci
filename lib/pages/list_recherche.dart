@@ -136,42 +136,43 @@ class _ItemListState extends State<ItemList> {
           ),
           body: Column(
             children: <Widget>[
-              SizedBox(
-                width: 300,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: searchController,
-                    onChanged: (value) {
-                      filterList();
-                    },
-                    decoration: const InputDecoration(
-                      labelStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                        color: Color.fromARGB(255, 233, 101, 29),
-                        width: 2,
-                      )),
-                      focusColor: Color.fromARGB(255, 233, 101, 29),
-                      labelText: 'Rechercher',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-              ),
               Row(
+                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SizedBox(
-                    width: 300,
+                    width: 130,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: searchController,
+                        onChanged: (value) {
+                          filterList();
+                        },
+                        decoration: const InputDecoration(
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                            color: Color.fromARGB(255, 233, 101, 29),
+                            width: 2,
+                          )),
+                          focusColor: Color.fromARGB(255, 233, 101, 29),
+                          labelText: 'Rechercher',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 160,
                     child: Form(
                         key: _formKey,
                         child: Column(children: [
                           DropdownButtonFormField<String>(
                             alignment: Alignment.centerLeft,
-                            padding: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(16),
                             borderRadius: BorderRadius.circular(12),
                             value: selectedValue,
                             items: [
@@ -198,13 +199,13 @@ class _ItemListState extends State<ItemList> {
                               labelText: 'Sélectionnez une option',
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: () => _selectDateRange(context),
-                            child: const Text('Sélectionner la Plage de Dates'),
-                          ),
                         ])),
                   ),
                 ],
+              ),
+              ElevatedButton(
+                onPressed: () => _selectDateRange(context),
+                child: const Text('Filtrer par Date'),
               ),
               if (selectedDateRange != null)
                 Text(
@@ -217,7 +218,7 @@ class _ItemListState extends State<ItemList> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('nombre de candidats entretien ',
+                    const Text('Nombre de candidat des entretiens ',
                         style: TextStyle(
                             fontFamily: "RobotoSlab",
                             fontWeight: FontWeight.bold,
@@ -242,7 +243,7 @@ class _ItemListState extends State<ItemList> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('nombre de candidats entretien ',
+                    const Text('Nombre de candidat des entretiens ',
                         style: TextStyle(
                             fontFamily: "RobotoSlab",
                             fontWeight: FontWeight.bold,
@@ -286,14 +287,14 @@ class _ItemListState extends State<ItemList> {
                                 title: Row(
                                   children: [
                                     Text(
-                                      'prenom:  ${listEntretiens[id].prenom}',
+                                      'Prenom:  ${listEntretiens[id].prenom}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Expanded(
                                       flex: 2,
                                       child: Text(
-                                        ' nom: ${listEntretiens[id].nom}',
+                                        ' Nom: ${listEntretiens[id].nom}',
                                         textAlign: TextAlign.end,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold),
@@ -308,18 +309,18 @@ class _ItemListState extends State<ItemList> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          ' email: ${listEntretiens[id].email}',
+                                          ' Email: ${listEntretiens[id].email}',
                                           style: const TextStyle(),
                                         ),
                                       ],
                                     ),
                                     Text(
-                                      " date : ${DateFormat('dd/MM/yyyy').format(listEntretiens[id].dateCreation)}",
+                                      " Date : ${DateFormat('dd/MM/yyyy').format(listEntretiens[id].dateCreation)}",
                                       style: const TextStyle(),
                                     ),
                                     Text(
                                       textAlign: TextAlign.right,
-                                      ' domaine: ${listEntretiens[id].domaine}',
+                                      ' Domaine: ${listEntretiens[id].domaine}',
                                       style: const TextStyle(
                                         color:
                                             Color.fromARGB(255, 233, 101, 29),
@@ -357,14 +358,14 @@ class _ItemListState extends State<ItemList> {
                                 title: Row(
                                   children: [
                                     Text(
-                                      'prenom:  ${filteredItems[index].prenom}',
+                                      'Prenom:  ${filteredItems[index].prenom}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Expanded(
                                       flex: 2,
                                       child: Text(
-                                        ' nom: ${filteredItems[index].nom}',
+                                        ' Nom: ${filteredItems[index].nom}',
                                         textAlign: TextAlign.end,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold),
@@ -377,7 +378,7 @@ class _ItemListState extends State<ItemList> {
                                     Row(
                                       children: [
                                         Text(
-                                          ' email: ${filteredItems[index].email}',
+                                          ' Email: ${filteredItems[index].email}',
                                           style: const TextStyle(),
                                         ),
                                       ],
