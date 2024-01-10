@@ -1,48 +1,198 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api
 
-import 'package:entretiens_defarsci/pages/detail_entretien_recherche.dart';
-import 'package:entretiens_defarsci/pages/details_entretiens.dart';
+import 'package:entretiens_defarsci/pages/details_entretiens.dart'
+    hide Entretiens;
+import 'package:entretiens_defarsci/pages/liste_entretiens.dart';
+
 import 'package:flutter/material.dart';
-import "model.dart";
+
 import "package:intl/intl.dart";
+import 'package:http/http.dart' as http;
+
+import 'dart:convert';
+
+class Entretiengeneral {
+  int id;
+  String prenom;
+  String nom;
+  String email;
+  String telephone;
+  String adresse;
+  String domaine;
+  String pourquoiCeChoix;
+  String participants;
+  String presentationDuCandidat;
+  String connaissezVousDefarsci;
+  String commentVoyezVousDefarsci;
+  String quEntendezDeDefarsci;
+  String atouts;
+  String faiblesses;
+  String maladieOuAllergie;
+  String objectifsDans2ans;
+  String moisDeFormation;
+  String demarrage;
+  String disponibiliteDuCandidat;
+  String modalitePaiement;
+  String numberEnCasDurgence;
+  String informationsSupplementaires;
+  DateTime dateCreation;
+
+  // var id;
+
+  Entretiengeneral(
+      {required this.id,
+      required this.nom,
+      required this.prenom,
+      required this.email,
+      required this.telephone,
+      required this.adresse,
+      required this.domaine,
+      required this.pourquoiCeChoix,
+      required this.participants,
+      required this.presentationDuCandidat,
+      required this.commentVoyezVousDefarsci,
+      required this.connaissezVousDefarsci,
+      required this.quEntendezDeDefarsci,
+      required this.atouts,
+      required this.faiblesses,
+      required this.maladieOuAllergie,
+      required this.objectifsDans2ans,
+      required this.moisDeFormation,
+      required this.demarrage,
+      required this.disponibiliteDuCandidat,
+      required this.modalitePaiement,
+      required this.numberEnCasDurgence,
+      required this.informationsSupplementaires,
+      required this.dateCreation});
+  factory Entretiengeneral.fromJson(Map<String, dynamic> json) {
+    return Entretiengeneral(
+      id: json["id"],
+      nom: json['nom'],
+      prenom: json['prenom'],
+      email: json['email'],
+      telephone: json['telephone'],
+      adresse: json['addresse'],
+      domaine: json['domaine'],
+      pourquoiCeChoix: json['pourquoi_ce_choix'],
+      participants: json['participants'],
+      presentationDuCandidat: json['presentation_du_Candidat'],
+      commentVoyezVousDefarsci: json['comment_voyez_vous_defarsci'],
+      connaissezVousDefarsci: json['connaissez_vous_defarsci'],
+      quEntendezDeDefarsci: json['qu_entendez_de_defarsci'],
+      atouts: json['atouts'],
+      faiblesses: json['faiblesses'],
+      maladieOuAllergie: json['maladie_ou_allergie'],
+      objectifsDans2ans: json['objectifs_dans_2ans'],
+      moisDeFormation: json['mois_de_formation'],
+      demarrage: json['demarrage'],
+      disponibiliteDuCandidat: json['disponibilite_du_candidat'],
+      modalitePaiement: json['modalite_paiement'],
+      numberEnCasDurgence: json['number_en_cas_d_urgence'],
+      informationsSupplementaires: json['informations_supplementaires'],
+      dateCreation: DateTime.parse(json['created_at']),
+    );
+  }
+}
+
+Future<List<Entretiengeneral>> fetchEntretiensFromApi() async {
+  const apiUrl = 'https://entretiens.defarsci.fr/api/entretiens';
+  final response = await http.get(Uri.parse(apiUrl));
+
+  if (response.statusCode == 200) {
+    List<dynamic> entretiensJson = json.decode(response.body)["entretiens"];
+    List<Entretiengeneral> entretiens = entretiensJson
+        .map((entretienJson) => Entretiengeneral.fromJson(entretienJson))
+        .toList();
+
+    return entretiens;
+  } else {
+    throw Exception('Erreur lors de la récupération des entretiens');
+  }
+}
 
 class ListRecherche extends StatelessWidget {
-  const ListRecherche({super.key});
+  const ListRecherche({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: ItemList(
-          items: listEntretiens,
-          itemListpickerRangeDateSearch: listEntretiens,
-        ),
+        body: SearchScreen(),
       ),
     );
   }
 }
 
-// ignore: must_be_immutable
-class ItemList extends StatefulWidget {
-  List<Entretiens> items;
-  final List<Entretiens> itemListpickerRangeDateSearch;
-  ItemList(
-      {super.key,
-      required this.items,
-      required this.itemListpickerRangeDateSearch});
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
-  // ignore: library_private_types_in_public_api
-  _ItemListState createState() => _ItemListState();
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _ItemListState extends State<ItemList> {
+class _SearchScreenState extends State<SearchScreen> {
+  List<Entretiengeneral> entretiens = [];
+  List<Entretiengeneral> filteredEntretiens = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String selectedValue = 'dev';
   int nbreEntretien = 0;
-  late List<Entretiens> filteredItems;
+  final myController = TextEditingController();
+  late List<dynamic> filteredItems = [];
   bool affiche = true;
   TextEditingController searchController = TextEditingController();
   DateTimeRange? selectedDateRange;
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEntretiens();
+  }
+
+  Future<void> _loadEntretiens() async {
+    List<Entretiengeneral> fetchedEntretiens = await fetchEntretiensFromApi();
+    setState(() {
+      entretiens = fetchedEntretiens;
+      filteredEntretiens = entretiens; // Afficher tous les entretiens au début
+      affiche = !true;
+    });
+  }
+
+  void _filterEntretiens(String searchTerm) {
+    String filterTextOption = selectedValue;
+    setState(() {
+      filteredEntretiens = entretiens.where((entretien) {
+        return entretien.prenom
+                .toLowerCase()
+                .contains(searchTerm.toLowerCase()) ||
+            entretien.nom.toLowerCase().contains(searchTerm.toLowerCase()) &&
+                entretien.domaine.toLowerCase() == filterTextOption;
+      }).toList();
+
+      affiche = !true;
+    });
+  }
+
+  void filterListOption() {
+    String filterTextOption = selectedValue;
+    nbreEntretien;
+    setState(() {
+      filteredEntretiens = entretiens
+          .where((item) =>
+              item.domaine.toLowerCase().contains(filterTextOption) &&
+              item.prenom.contains(searchController.text))
+          .toList();
+      affiche = !true;
+    });
+  }
+
   Future<void> _selectDateRange(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
       initialEntryMode: DatePickerEntryMode.input,
@@ -61,338 +211,238 @@ class _ItemListState extends State<ItemList> {
 
   void _applyDateFilter() {
     if (selectedDateRange != null) {
-      filteredItems = widget.itemListpickerRangeDateSearch
+      filteredEntretiens = entretiens
           .where((item) =>
               item.dateCreation.isAfter(selectedDateRange!.start) &&
               item.dateCreation.isBefore(selectedDateRange!.end))
           .toList();
       affiche = !true;
     } else {
-      filteredItems = List.from(widget.itemListpickerRangeDateSearch);
+      filteredItems = List.from(entretiens);
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    filteredItems = widget.items;
-  }
-
-  void filterList() {
-    String filterText = searchController.text.toLowerCase();
-    String filterTextOption = selectedValue;
-    setState(() {
-      filteredItems = widget.items
-          .where((item) =>
-              item.prenom.toLowerCase().contains(filterText) ||
-              item.nom.toLowerCase().contains(filterText) &&
-                  item.domaine.toLowerCase() == filterTextOption)
-          .toList();
-      affiche = !true;
-    });
-  }
-
-  void filterListOption() {
-    String filterTextOption = selectedValue;
-    nbreEntretien;
-    setState(() {
-      filteredItems = widget.items
-          .where((item) =>
-              item.domaine.toLowerCase().contains(filterTextOption) &&
-              item.prenom.contains(searchController.text))
-          .toList();
-      affiche = !true;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     var routes = <String, WidgetBuilder>{
-      '/details-entretien': (context) => const DetailsEntretiens(),
-      '/details-recherche': (context) => const DetailsEntretienRecherche(),
+      '/details-entretiens/': (context) => const DetailsEntretiens(),
+      // '/details-recherche': (context) => DetailsEntretienRecherche(),
     };
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: routes,
-      title: 'Recherche dans la liste d\'entretien',
       home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color.fromARGB(255, 132, 173, 219),
-            title: const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 20, top: 10),
-                  child: Text(
-                    'Recherche dans la liste d\'entretien',
-                    style: TextStyle(
-                        wordSpacing: 10,
-                        color: Color.fromARGB(255, 247, 247, 248),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  ),
-                ),
-              ],
-            ),
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 132, 173, 219),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ListEntretiens()),
+              );
+            },
           ),
-          body: Column(
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: 130,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: searchController,
-                        onChanged: (value) {
-                          filterList();
-                        },
-                        decoration: const InputDecoration(
-                          labelStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Color.fromARGB(255, 233, 101, 29),
-                            width: 2,
-                          )),
-                          focusColor: Color.fromARGB(255, 233, 101, 29),
-                          labelText: 'Rechercher',
-                          border: OutlineInputBorder(),
+          title: const Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 20, top: 10),
+                child: Text(
+                  'Recherche dans la liste d\'entretien',
+                  style: TextStyle(
+                      wordSpacing: 10,
+                      color: Color.fromARGB(255, 247, 247, 248),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: Column(
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: 130,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: myController,
+                      onChanged: _filterEntretiens,
+                      decoration: InputDecoration(
+                        labelStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
+                        focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Color.fromARGB(255, 233, 101, 29),
+                          width: 2,
+                        )),
+                        focusColor: const Color.fromARGB(255, 233, 101, 29),
+                        labelText: 'Rechercher',
+                        prefixIcon: GestureDetector(
+                          child: const Icon(
+                            Icons.clear,
+                          ),
+                          onTap: () {
+                            setState(() {
+                              myController.clear();
+                              fetchEntretiensFromApi();
+                            });
+                          },
+                        ),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 160,
-                    child: Form(
-                        key: _formKey,
-                        child: Column(children: [
-                          DropdownButtonFormField<String>(
-                            alignment: Alignment.centerLeft,
-                            padding: const EdgeInsets.all(16),
-                            borderRadius: BorderRadius.circular(12),
-                            value: selectedValue,
-                            items: [
-                              'cm',
-                              'dev',
-                              'marketing',
-                            ]
-                                .map((value) => DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    ))
-                                .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                selectedValue = value!;
-                                filterListOption();
-                              });
-                            },
-                            decoration: const InputDecoration(
-                              labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                              border: OutlineInputBorder(),
-                              labelText: 'Sélectionnez une option',
+                ),
+                SizedBox(
+                  width: 160,
+                  child: Form(
+                      key: _formKey,
+                      child: Column(children: [
+                        DropdownButtonFormField<String>(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.all(16),
+                          borderRadius: BorderRadius.circular(12),
+                          value: selectedValue,
+                          items: [
+                            'bureau',
+                            'dev',
+                            'marketing',
+                          ]
+                              .map((value) => DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValue = value!;
+                              filterListOption();
+                            });
+                          },
+                          decoration: const InputDecoration(
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
                             ),
+                            border: OutlineInputBorder(),
+                            labelText: 'Sélectionnez une option',
                           ),
-                        ])),
-                  ),
-                ],
+                        ),
+                      ])),
+                ),
+              ],
+            ),
+            ElevatedButton(
+              onPressed: () => _selectDateRange(context),
+              child: const Text('Filtrer par Date'),
+            ),
+            if (selectedDateRange != null)
+              Text(
+                'Plage de Dates Sélectionnée:\n${DateFormat('dd/MM/yyyy').format(selectedDateRange!.start)} - ${DateFormat('dd/MM/yyyy').format(selectedDateRange!.end)}',
+                style: const TextStyle(fontSize: 18),
+                textAlign: TextAlign.center,
               ),
-              ElevatedButton(
-                onPressed: () => _selectDateRange(context),
-                child: const Text('Filtrer par Date'),
+            const SizedBox(height: 16),
+            affiche
+                ? const Center(child: CircularProgressIndicator())
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Nombre de candidat des entretiens ',
+                          style: TextStyle(
+                              fontFamily: "RobotoSlab",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20, right: 50),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.red,
+                        ),
+                        height: 30,
+                        width: 30,
+                        alignment: Alignment.center,
+                        child: Text(
+                          style: const TextStyle(color: Colors.white),
+                          filteredEntretiens.length.toString(),
+                        ),
+                      )
+                    ],
+                  ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredEntretiens.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                        color: Colors.white,
+                        margin: const EdgeInsets.all(5),
+                        child: ListTile(
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            '/details-entretiens/',
+                            arguments: {
+                              'id': filteredEntretiens[index].id,
+                              'entretien': filteredEntretiens
+                            },
+                          ),
+                          title: Row(
+                            children: [
+                              Text(
+                                'Prenom:  ${filteredEntretiens[index].prenom}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  ' Nom: ${filteredEntretiens[index].nom}',
+                                  textAlign: TextAlign.end,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ],
+                          ),
+                          subtitle: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    ' Email: ${filteredEntretiens[index].email}',
+                                    style: const TextStyle(),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                " Date : ${DateFormat('dd/MM/yyyy').format(filteredEntretiens[index].dateCreation)}",
+                                style: const TextStyle(),
+                              ),
+                              Text(
+                                textAlign: TextAlign.right,
+                                ' Domaine: ${filteredEntretiens[index].domaine}',
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 233, 101, 29),
+                                ),
+                              )
+                            ],
+                          ),
+                        )),
+                  );
+                },
               ),
-              if (selectedDateRange != null)
-                Text(
-                  'Plage de Dates Sélectionnée:\n${DateFormat('dd/MM/yyyy').format(selectedDateRange!.start)} - ${DateFormat('dd/MM/yyyy').format(selectedDateRange!.end)}',
-                  style: const TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center,
-                ),
-              const SizedBox(height: 16),
-              if (affiche)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Nombre de candidat des entretiens ',
-                        style: TextStyle(
-                            fontFamily: "RobotoSlab",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16)),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 20, right: 50),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.red,
-                      ),
-                      height: 30,
-                      width: 30,
-                      alignment: Alignment.center,
-                      child: Text(
-                        style: const TextStyle(color: Colors.white),
-                        filteredItems.length.toString(),
-                      ),
-                    )
-                  ],
-                ),
-              if (!affiche)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Nombre de candidat des entretiens ',
-                        style: TextStyle(
-                            fontFamily: "RobotoSlab",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16)),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 20, right: 50),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.red,
-                      ),
-                      height: 30,
-                      width: 30,
-                      alignment: Alignment.center,
-                      child: Text(
-                        style: const TextStyle(color: Colors.white),
-                        filteredItems.length.toString(),
-                      ),
-                    )
-                  ],
-                ),
-              if (affiche)
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: filteredItems.length,
-                    itemBuilder: (context, index) {
-                      // print(filteredItems[index]);
-
-                      nbreEntretien = filteredItems.length;
-                      int id = index;
-                      return Column(
-                        children: [
-                          Card(
-                              color: Colors.white,
-                              margin: const EdgeInsets.all(5),
-                              child: ListTile(
-                                onTap: () => Navigator.pushNamed(
-                                  context,
-                                  '/details-entretien',
-                                  arguments: {'id': index, 'age': 25},
-                                ),
-                                title: Row(
-                                  children: [
-                                    Text(
-                                      'Prenom:  ${listEntretiens[id].prenom}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Text(
-                                        ' Nom: ${listEntretiens[id].nom}',
-                                        textAlign: TextAlign.end,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                subtitle: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          ' Email: ${listEntretiens[id].email}',
-                                          style: const TextStyle(),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      " Date : ${DateFormat('dd/MM/yyyy').format(listEntretiens[id].dateCreation)}",
-                                      style: const TextStyle(),
-                                    ),
-                                    Text(
-                                      textAlign: TextAlign.right,
-                                      ' Domaine: ${listEntretiens[id].domaine}',
-                                      style: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 233, 101, 29),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              if (!affiche)
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: filteredItems.length,
-                    itemBuilder: (context, index) {
-                      nbreEntretien = filteredItems.length;
-                      int id = index;
-                      return Column(
-                        children: [
-                          Card(
-                              color: Colors.white,
-                              margin: const EdgeInsets.all(5),
-                              child: ListTile(
-                                onTap: () => Navigator.pushNamed(
-                                  context,
-                                  '/details-recherche',
-                                  arguments: {
-                                    'id': id,
-                                    'entretien': filteredItems
-                                  },
-                                ),
-                                title: Row(
-                                  children: [
-                                    Text(
-                                      'Prenom:  ${filteredItems[index].prenom}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Text(
-                                        ' Nom: ${filteredItems[index].nom}',
-                                        textAlign: TextAlign.end,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                subtitle: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          ' Email: ${filteredItems[index].email}',
-                                          style: const TextStyle(),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ],
-                      );
-                    },
-                  ),
-                )
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

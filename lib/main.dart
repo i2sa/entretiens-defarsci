@@ -1,4 +1,6 @@
 import 'package:entretiens_defarsci/pages/liste_entretiens.dart';
+
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +18,12 @@ class MyApp extends StatelessWidget {
       title: 'Entretiens Defarsci',
       initialRoute: '/',
       routes: {
-        '/': (context) => const ListEntretiens(),
+        '/': (context) =>
+        //  Test2()
+
+        // ListEntretiens()
+        const ListEntretiens()
+        // const Test()
       },
       debugShowCheckedModeBanner: false,
     );

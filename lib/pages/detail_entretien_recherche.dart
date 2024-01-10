@@ -1,8 +1,31 @@
-import 'package:flutter/material.dart';
-import 'list_recherche.dart';
+// ignore: file_names
+import 'package:entretiens_defarsci/pages/liste_entretiens.dart';
 
-class DetailsEntretienRecherche extends StatelessWidget {
+import 'package:flutter/material.dart';
+
+
+
+
+class DetailsEntretienRecherche extends StatefulWidget {
   const DetailsEntretienRecherche({super.key});
+
+  @override
+  State<DetailsEntretienRecherche> createState() => _DetailsEntretienRechercheState();
+}
+
+class _DetailsEntretienRechercheState extends State<DetailsEntretienRecherche> {
+  late List<dynamic> entretiens = [];
+  
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +33,8 @@ class DetailsEntretienRecherche extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     int id = arguments["id"];
-    List entretien = arguments["entretien"];
+    entretiens = arguments['entretien'];
 
-    // int age = arguments['age'];
     return MaterialApp(
       color: Colors.white,
       title: "Detail entretien ",
@@ -25,7 +47,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ListRecherche()),
+                MaterialPageRoute(builder: (context) =>  const ListEntretiens()),
               );
             },
           ),
@@ -59,14 +81,14 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Prenom: ${entretien[id].prenom}',
+                                          'Prenom: ${entretiens[id]["prenom"]}',
                                           style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                           textAlign: TextAlign.left,
                                         ),
                                         Text(
-                                          ' Nom: ${entretien[id].nom}',
+                                          ' Nom: ${entretiens[id]["nom"]}',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
@@ -79,12 +101,12 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Telephone: ${entretien[id].telephone}',
+                                          'Telephone: ${entretiens[id]["telephone"]}',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
                                         Text(
-                                          ' Domaine: ${entretien[id].domaine}',
+                                          ' Domaine: ${entretiens[id]["domaine"]}',
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 233, 101, 29)),
@@ -99,7 +121,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        ' Addresse: ${entretien[id].adresse}',
+                                        ' Addresse: ${entretiens[id]["addresse"]}',
                                         style: const TextStyle(
                                             color: Colors.black),
                                       ),
@@ -107,7 +129,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  ' Email: ${entretien[id].email}',
+                                  ' Email: ${entretiens[id]["email"]}',
                                   style: const TextStyle(
                                       color: Color.fromARGB(255, 233, 101, 29)),
                                 )
@@ -128,7 +150,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Presentation du candidat: ${entretien[id].presentationDuCandidat}',
+                                          'Presentation du candidat: ${entretiens[id]["presentation_du_Candidat"]}',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
@@ -155,7 +177,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          ' Connaissez vous defarsci: ${entretien[id].connaissezVousDefarsci}',
+                                          ' Connaissez vous defarsci: ${entretiens[id]["connaissez_vous_defarsci"]}',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
@@ -168,7 +190,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Comment voyez vous defarsci: ${entretien[id].commentVoyezVousDefarsci}',
+                                          'Comment voyez vous defarsci: ${entretiens[id]["comment_voyez_vous_defarsci"]}',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
@@ -181,7 +203,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          ' Qu\'entendez de defarsci: ${entretien[id].quEntendezDeDefarsci}',
+                                          ' Qu\'entendez de defarsci: ${entretiens[id]["qu_entendez_de_defarsci"]}',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
@@ -206,12 +228,12 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Pourquoi ce choix: ${entretien[id].pourquoiCeChoix}',
+                                          'Pourquoi ce choix: ${entretiens[id]["pourquoi_ce_choix"]}',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
                                         Text(
-                                          'Atouts: ${entretien[id].atouts}',
+                                          'Atouts: ${entretiens[id]["atouts"]}',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
@@ -224,7 +246,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          ' Faiblesses: ${entretien[id].faiblesses} ',
+                                          ' Faiblesses: ${entretiens[id]["faiblesses"]} ',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
@@ -241,7 +263,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                             MainAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Maladie ou Allergie: ${entretien[id].maladieOuAllergie} ',
+                                            'Maladie ou Allergie: ${entretiens[id]["maladie_ou_allergie"]} ',
                                             style: const TextStyle(
                                                 color: Colors.black),
                                           ),
@@ -256,7 +278,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Disponibilite du candidat: ${entretien[id].disponibiliteDuCandidat} ',
+                                        'Disponibilite du candidat: ${entretiens[id]["disponibilite_du_candidat"]} ',
                                         style: const TextStyle(
                                             color: Colors.black),
                                       ),
@@ -270,7 +292,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          ' Objectifs dans 2ans: ${entretien[id].objectifsDans2ans} ',
+                                          ' Objectifs dans 2ans: ${entretiens[id]["objectifs_dans_2ans"]} ',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
@@ -282,7 +304,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        'Disponibilite du candidat: ${entretien[id].disponibiliteDuCandidat} ',
+                                        'Disponibilite du candidat: ${entretiens[id]["disponibilite_du_candidat"]} ',
                                         style: const TextStyle(
                                             color: Colors.black),
                                       ),
@@ -296,7 +318,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Nombre cas d\'urgence: ${entretien[id].numberEnCasDurgence} ',
+                                          'Nombre cas d\'urgence: ${entretiens[id]["number_en_cas_d_urgence"]} ',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
@@ -308,7 +330,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        ' Informations supplementaires: ${entretien[id].informationsSupplementaires} ',
+                                        ' Informations supplementaires: ${entretiens[id]["informations_supplementaires"]} ',
                                         style: const TextStyle(
                                             color: Colors.black),
                                       ),
@@ -334,12 +356,12 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Mois de formation: ${entretien[id].moisDeFormation} ',
+                                          'Mois de formation: ${entretiens[id]["mois_de_formation"]} ',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
                                         Text(
-                                          ' Demarrage: ${entretien[id].demarrage} ',
+                                          ' Demarrage: ${entretiens[id]["demarrage"]} ',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
@@ -351,7 +373,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                        ' Modalite de paiment: ${entretien[id].modalitePaiement} ',
+                                        ' Modalite de paiment: ${entretiens[id]["modalite_paiement"]} ',
                                         style: const TextStyle(
                                             color: Colors.black),
                                       ),
@@ -364,7 +386,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                           Card(
                             child: Column(
                               children: [
-                                const Text("  Charge de l'entretien",
+                                const Text("  Charge de l'entretiens",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 25,
@@ -377,7 +399,7 @@ class DetailsEntretienRecherche extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          ' Participants: ${entretien[id].participants} ',
+                                          ' Participants: ${entretiens[id]["participants"]} ',
                                           style: const TextStyle(
                                               color: Colors.black),
                                         ),
