@@ -135,6 +135,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   List<Entretiengeneral> entretiens = [];
   List<Entretiengeneral> filteredEntretiens = [];
+  List<Entretiengeneral> filteredEntretiens2 = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String selectedValue = 'dev';
   int nbreEntretien = 0;
@@ -165,32 +166,38 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
-  void _filterEntretiens(String searchTerm) {
+  List<Entretiengeneral> _filterEntretiens(String searchTerm) {
     String filterTextOption = selectedValue;
     setState(() {
       filteredEntretiens = entretiens.where((entretien) {
         return entretien.prenom
                 .toLowerCase()
                 .contains(searchTerm.toLowerCase()) ||
-            entretien.nom.toLowerCase().contains(searchTerm.toLowerCase()) &&
-                entretien.domaine.toLowerCase() == filterTextOption;
+            entretien.nom.toLowerCase().contains(searchTerm.toLowerCase());
       }).toList();
 
       affiche = !true;
     });
+    return !affiche ? filteredEntretiens : entretiens;
   }
 
-  void filterListOption() {
+  List<Entretiengeneral> filterListOption() {
     String filterTextOption = selectedValue;
+    String text = searchController.text;
     nbreEntretien;
+
     setState(() {
-      filteredEntretiens = entretiens
+      filteredEntretiens = filteredEntretiens
           .where((item) =>
               item.domaine.toLowerCase().contains(filterTextOption) &&
-              item.prenom.contains(searchController.text))
+              item.prenom.contains(text) &&
+              item.nom.contains(text))
           .toList();
+
       affiche = !true;
     });
+
+    return affiche ? filteredEntretiens : filteredEntretiens;
   }
 
   Future<void> _selectDateRange(BuildContext context) async {
@@ -272,29 +279,18 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: TextField(
                       controller: myController,
                       onChanged: _filterEntretiens,
-                      decoration: InputDecoration(
-                        labelStyle: const TextStyle(
+                      decoration: const InputDecoration(
+                        labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
-                        focusedBorder: const OutlineInputBorder(
+                        focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                           color: Color.fromARGB(255, 233, 101, 29),
                           width: 2,
                         )),
-                        focusColor: const Color.fromARGB(255, 233, 101, 29),
+                        focusColor: Color.fromARGB(255, 233, 101, 29),
                         labelText: 'Rechercher',
-                        prefixIcon: GestureDetector(
-                          child: const Icon(
-                            Icons.clear,
-                          ),
-                          onTap: () {
-                            setState(() {
-                              myController.clear();
-                              fetchEntretiensFromApi();
-                            });
-                          },
-                        ),
-                        border: const OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                       ),
                     ),
                   ),
@@ -313,6 +309,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             'bureau',
                             'dev',
                             'marketing',
+                            'arduino',
                           ]
                               .map((value) => DropdownMenuItem<String>(
                                     value: value,
